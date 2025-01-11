@@ -3,11 +3,10 @@ import morgan from "morgan";
 import cors from "cors";
 import { root } from "./routes/root.routes.js";
 import { getAllEmployees, postEmployee, getEmployeeId, putEmployee, patchEmployee } from "./routes/employee.routes.js";
-import { PORT } from "../env.js";
+import "dotenv/config";
 
 
 const app = express();
-cors();     //? --> cors({ options? })
 
 
 //* --> Setting
@@ -15,6 +14,7 @@ app.set('name', '<API>');
 
 
 //* --> Middleware
+app.use(cors({ origin: "*", methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE' ] }));                        //? --> cors({ options? })
 app.use(morgan('dev'));                 //? --> morgan({ options? })
 app.use(express.json());                //? --> json({ options? })
 app.use(express.static('./public'));    //? --> static({ options? })
@@ -31,6 +31,6 @@ app.use('/api', patchEmployee);
 
 
 //* --> Port
-app.listen(PORT, () => {
-    console.log(`\n--> Server ${app.get("name")} listen on http://localhost:${PORT}\n`);
+app.listen(process.env.PORT, () => {
+	console.log(`\n--> Server ${app.get("name")} listen on http://localhost:${process.env.PORT}\n`);
 })
